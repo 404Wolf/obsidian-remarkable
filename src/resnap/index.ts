@@ -22,10 +22,13 @@ export default async function callReSnap(
     ]);
 
     console.log("Command output:", reSnapOutput.stdout);
-    const postProcessOutput = await execFile(postProcess, [outputPath]);
-    console.log("Postprocess output:", postProcessOutput.stdout);
-    if (postProcessOutput.stderr)
-      console.error("Postprocess stderr:", postProcessOutput.stderr);
+
+    if (postProcess !== "") {
+      const postProcessOutput = await execFile(postProcess, [outputPath]);
+      console.log("Postprocess output:", postProcessOutput.stdout);
+      if (postProcessOutput.stderr)
+        console.error("Postprocess stderr:", postProcessOutput.stderr);
+    }
   } catch (error: any) {
     console.error(`Error: ${error.message}\nstderr: ${error.stderr}`);
     throw error;
