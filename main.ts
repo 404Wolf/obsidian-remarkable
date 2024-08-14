@@ -14,6 +14,7 @@ interface MyPluginSettings {
     invertRemarkableImages: boolean;
     outputPath: string;
     rmAddress: string;
+    extraArgs: string[];
     postprocessor: string;
 }
 
@@ -22,6 +23,7 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
     invertRemarkableImages: true,
     outputPath: '.',
     rmAddress: '10.11.99.1',
+    extraArgs: ['-c'],
     postprocessor: ''
 }
 
@@ -132,7 +134,7 @@ export default class MyPlugin extends Plugin {
         const absOutputFolderPath = adapter.getFullRealPath(this.settings.outputPath);
         const drawingFilePath = path.join(absOutputFolderPath, drawingFileName);
 
-        let args = ['-o', drawingFilePath, '-s', rmAddress];
+        let args = ['-o', drawingFilePath, '-s', rmAddress, ...this.settings.extraArgs];
         if(landscape) {
             args = args.concat(['-l']);
         }
@@ -263,6 +265,17 @@ class SampleSettingTab extends PluginSettingTab {
             .setValue(this.plugin.settings.reSnapPath)
             .onChange(async (value) => {
                 this.plugin.settings.reSnapPath = value;
+                await this.plugin.saveSettings();
+            }));
+
+        new Setting(containerEl)
+            .setName('reSnap extra arguments')
+            .setDesc('Comma seperated extra arguments to pass to reSnap')
+            .addText(text => text
+            .setPlaceholder('-c')
+            .setValue(this.plugin.settings.reSnapPath)
+            .onChange(async (value) => {
+                this.plugin.settings.extraArgs = value.split(",");
                 await this.plugin.saveSettings();
             }));
 

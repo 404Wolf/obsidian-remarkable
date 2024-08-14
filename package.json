@@ -1,27 +1,21 @@
 {
-  "name": "remarkable-obsidian",
-  "version": "1.1.1",
-  "description": "A plugin to integrate the reMarkable tablet into an Obsidian workflow, allowing users to insert drawings as nicely styled transparent images",
-  "main": "main.js",
-  "scripts": {
-    "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js --environment BUILD:production"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "name": "remarkable-obsidian-integration",
+  "module": "plugin.ts",
+  "child_process": false,
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^18.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^11.2.1",
-    "@rollup/plugin-typescript": "^8.2.1",
-    "@types/node": "^14.14.37",
-    "obsidian": "^0.16.3",
-    "rollup": "^2.32.1",
-    "tslib": "^2.2.0",
-    "typescript": "^4.2.4"
+    "@types/bun": "latest",
+    "esbuild": "^0.23.0",
+    "obsidian": "^1.6.6"
   },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "bunx nodemon --ext ts js --exec 'bun run build'",
+    "build": "bun run ./build.ts"
+  },
+  "type": "module",
   "dependencies": {
-    "moment": "^2.29.1"
+    "execa": "^9.3.0"
   }
 }
